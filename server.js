@@ -93,4 +93,4 @@ app.use('/api/coolers-admin', protectCoolerAdmin, coolerAdminRoutes);
 
 app.use('/api/admin', protectAdmin, adminRoutes);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+app.listen(8080, () => console.log('Server running on port 5000'));
