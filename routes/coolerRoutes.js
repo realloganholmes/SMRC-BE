@@ -22,7 +22,7 @@ router.post('/coolerNominate', async (req, res) => {
     res.status(400).json({ error: 'Failed to save cooler nomination.' });
   }
 });
-  
+
 router.get('/coolerNominations', async (req, res) => {
   try {
     const coolerNominations = await CoolerNomination.find();
