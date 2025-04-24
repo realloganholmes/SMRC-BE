@@ -92,6 +92,29 @@ const protectRecapAdmin = async (req, res, next) => {
   }
 };
 
+const protectRFGAdmin = async (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Not authorized' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(401).json({ message: 'User not found.' });
+    }
+
+    if (!user.admin && !user.RFGAdmin) {
+      return res.status(401).json({ message: 'User is not an administrator' });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
 const protect = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Not authorized' });
@@ -122,6 +145,10 @@ app.use('/api/recaps', protect, recapRoutes);
 app.use('/api/recaps-admin', protectRecapAdmin, recapAdminRoutes);
 
 app.use('/api/uploadFile', uploadRouter);
+
+app.use('/api/rfg', protect, rfgRoutes);
+
+app.use('/api/rfg-admin', protectRFGAdmin, rfgAdminRoutes);
 
 app.use('/api/admin', protectAdmin, adminRoutes);
 
