@@ -1,18 +1,15 @@
+const User = require('../models/User');
+const express = require('express');
+const router = express.Router();
+
 // Update password
 router.post('/resetPassword', async (req, res) => {
     const { password } = req.body;
     const user = req.user;
   
     try {
-        const updatedUser = await User.findByIdAndUpdate(
-            user._id,
-            { password: password },
-            { new: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        user.password = password;
+        await user.save();
 
         res.status(201).json({ message: 'User password updated successfully' });
     } catch (error) {
@@ -20,3 +17,5 @@ router.post('/resetPassword', async (req, res) => {
         res.status(500).json({ message: 'Unable to update user password' });
     }
 });
+
+module.exports = router;

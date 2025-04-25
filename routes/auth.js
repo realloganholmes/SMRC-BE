@@ -33,6 +33,7 @@ router.post('/login', async (req, res) => {
   const token = jwt.sign(
     {
       userId: user._id,
+      username: user.username,
       isAdmin: user.admin,
       isCoolerAdmin: user.coolerAdmin,
       isRaceAdmin: user.raceAdmin,
