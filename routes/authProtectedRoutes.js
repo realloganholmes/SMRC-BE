@@ -18,4 +18,17 @@ router.post('/resetPassword', async (req, res) => {
     }
 });
 
+// Get all users
+router.get('/allUsers', async (req, res) => {
+    try {
+        const users = await User.find({}, 'username');
+        const usernames = users.map(user => user.username);
+        res.status(200).json(usernames);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to retrieve all users.' });
+      }
+});
+
+
 module.exports = router;
