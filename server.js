@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const authRoutes = require('./routes/auth');
+const authProtectedRoutes = require('./routes/authProtected');
 const coolerRoutes = require('./routes/coolerRoutes');
 const coolerAdminRoutes = require('./routes/coolerAdminRoutes');
 const recapRoutes = require('./routes/recapRoutes');
@@ -137,6 +138,8 @@ const protect = async (req, res, next) => {
 };
 
 app.use('/api/auth', authRoutes);
+
+app.use('/api/auth-protected', protect, authProtectedRoutes);
 
 app.use('/api/coolers', protect, coolerRoutes);
 
