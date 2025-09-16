@@ -39,26 +39,26 @@ const pointsMap = new Map([
 ]);
 
 router.post('/addRFG', async (req, res) => {
-  const { racer, race, date, distance, time, pr } = req.body;
+    const { racer, race, date, distance, time, pr } = req.body;
 
-  try {
-    const rfg = new RFG({
-      name: racer,
-      raceName: race,
-      date,
-      time,
-      distance,
-      isPR: pr,
-      points: pointsMap.get(distance + (pr ? 'PR' : '')),
-    });
+    try {
+        const rfg = new RFG({
+            name: racer,
+            raceName: race,
+            date,
+            time,
+            distance,
+            isPR: pr,
+            points: pointsMap.get(distance + (pr ? 'PR' : '')),
+        });
 
-    await rfg.save();
+        await rfg.save();
 
-    res.status(201).json({ message: 'RFG entry saved successfully!' });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: 'Failed to save RFG entry.' });
-  }
+        res.status(201).json({ message: 'RFG entry saved successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: 'Failed to save RFG entry.' });
+    }
 });
 
 module.exports = router;
