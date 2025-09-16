@@ -22,7 +22,10 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+  // Escape special characters in username for regex
+  const safeUsername = username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const user = await User.findOne({ username: new RegExp(`^${safeUsername}$`, 'i') });
+
   if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
   const match = await user.matchPassword(password);

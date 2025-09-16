@@ -49,7 +49,7 @@ router.post('/addRFG', async (req, res) => {
       time,
       distance,
       isPR: pr,
-      points: pointsMap.get(distance + (isPR ? 'PR' : '')),
+      points: pointsMap.get(distance + (pr ? 'PR' : '')),
     });
 
     await rfg.save();

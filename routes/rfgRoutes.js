@@ -16,6 +16,7 @@ router.get('/getStandings', async (req, res) => {
                 totalPoints: { $sum: '$points' },
                 races: {
                 $push: {
+                    id: '$_id',
                     race: '$raceName',
                     date: '$date',
                     distance: '$distance',
