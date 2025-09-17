@@ -24,10 +24,10 @@ router.post('/addRecap', async (req, res) => {
     res.status(400).json({ error: 'Failed to save recap.' });
   }
 });
-  
+
 router.get('/getRecaps', async (req, res) => {
   try {
-    const { startDate, endDate, date, distance, raceName, author } = req.query;
+    const { startDate, endDate, date, distance, raceName, author, nominated } = req.query;
 
     const query = {};
 
@@ -46,13 +46,40 @@ router.get('/getRecaps', async (req, res) => {
     if (distance) query.distance = distance;
     if (raceName) query.raceName = raceName;
     if (author) query.author = author;
+    if (nominated) query.nominated = nominated;
 
     const recaps = await Recap.find(query).sort({ date: -1 });
-    
+
     res.status(200).json(recaps);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to retrieve recaps.' });
+  }
+});
+
+router.post('/recapNominated', async (req, res) => {
+  const { recapId, nominator } = req.body;
+
+  if (!recapId) {
+    return res.status(400).json({ error: 'recapId is required' });
+  }
+
+  try {
+    const updatedRecap = await Recap.findByIdAndUpdate(
+      recapId,
+      { nominated: true },
+      { nominator: nominator },
+      { new: true }
+    );
+
+    if (!updatedRecap) {
+      return res.status(404).json({ error: 'Recap not found' });
+    }
+
+    res.status(200).json({ message: 'Recap nominated', recap: updatedRecap });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Failed to update recap' });
   }
 });
 
