@@ -68,8 +68,10 @@ router.post('/recapNominated', async (req, res) => {
     const username = req.user.username;
     const updatedRecap = await Recap.findByIdAndUpdate(
       recapId,
-      { nominated: true },
-      { nominator: username },
+      {
+        nominated: true,
+        nominator: username,
+      },
       { new: true }
     );
 
