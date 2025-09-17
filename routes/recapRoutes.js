@@ -58,17 +58,18 @@ router.get('/getRecaps', async (req, res) => {
 });
 
 router.post('/recapNominated', async (req, res) => {
-  const { recapId, nominator } = req.body;
+  const { recapId } = req.body;
 
   if (!recapId) {
     return res.status(400).json({ error: 'recapId is required' });
   }
 
   try {
+    const username = req.user.username;
     const updatedRecap = await Recap.findByIdAndUpdate(
       recapId,
       { nominated: true },
-      { nominator: nominator },
+      { nominator: username },
       { new: true }
     );
 
