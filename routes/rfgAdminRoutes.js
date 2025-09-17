@@ -30,16 +30,25 @@ router.delete('/deleteRFG/:id', async (req, res) => {
 });
 
 const pointsMap = new Map([
-    ["MarathonPR", 12],
-    ["Marathon", 10],
-    ["10kPR", 8],
-    ["10k", 6],
-    ["5kPR", 4],
-    ["5k", 2],
+    ["MarathonPR", 16],
+    ["MarathonAPR", 12],
+    ["Marathon", 4],
+    ["Half MarathonPR", 13],
+    ["Half MarathonAPR", 10],
+    ["Half Marathon", 3],
+    ["15kPR", 11],
+    ["15kAPR", 10],
+    ["15k", 3],
+    ["10kPR", 9],
+    ["10kAPR", 8],
+    ["10k", 2],
+    ["5kPR", 8],
+    ["5kAPR", 6],
+    ["5k", 1],
 ]);
 
 router.post('/addRFG', async (req, res) => {
-    const { racer, race, date, distance, time, pr } = req.body;
+    const { racer, race, date, distance, time, pr, apr } = req.body;
 
     try {
         const rfg = new RFG({
@@ -49,7 +58,8 @@ router.post('/addRFG', async (req, res) => {
             time,
             distance,
             isPR: pr,
-            points: pointsMap.get(distance + (pr ? 'PR' : '')),
+            isAPR: apr,
+            points: pointsMap.get(distance + (pr ? 'PR' : (apr ? 'APR' : ''))),
         });
 
         await rfg.save();

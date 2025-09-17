@@ -7,6 +7,7 @@ const rfgSchema = new mongoose.Schema({
   time: { type: String, required: true },
   distance: { type: String, required: true },
   isPR: { type: Boolean, required: true },
+  isAPR: { type: Boolean, required: true },
   points: { type: Number, required: true },
 });
 

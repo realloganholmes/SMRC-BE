@@ -11,21 +11,22 @@ router.get('/getStandings', async (req, res) => {
         const standings = await RFG.aggregate([
             { $match: { date: { $gte: cutoffDate } } },
             {
-            $group: {
-                _id: '$name',
-                totalPoints: { $sum: '$points' },
-                races: {
-                $push: {
-                    id: '$_id',
-                    race: '$raceName',
-                    date: '$date',
-                    distance: '$distance',
-                    time: '$time',
-                    pr: '$isPR',
-                    points: '$points',
+                $group: {
+                    _id: '$name',
+                    totalPoints: { $sum: '$points' },
+                    races: {
+                        $push: {
+                            id: '$_id',
+                            race: '$raceName',
+                            date: '$date',
+                            distance: '$distance',
+                            time: '$time',
+                            pr: '$isPR',
+                            apr: '$isAPR',
+                            points: '$points',
+                        },
+                    },
                 },
-                },
-            },
             },
             { $sort: { totalPoints: -1 } },
         ]);
